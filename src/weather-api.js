@@ -29,8 +29,11 @@ class WeatherAPI {
             "feelsLike",
             "winddir",
             "windspeed",
+            "humidity",
+            "icon",
         ]
 
+        console.log(data);
         const conditionData = data.currentConditions;
         console.log(conditionData);
 
@@ -40,6 +43,7 @@ class WeatherAPI {
             };
             return acc;
         }, {});
+        output.address = data.resolvedAddress;
         return output;
     }
 }

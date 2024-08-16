@@ -7,12 +7,24 @@
 
 :root {
     --banner-text: #4d7c0f;
+    --card-colour: #cffafe;
+}
+
+@font-face {
+    font-family: 'Mud';
+    src: url('./assets/mudtrack.otf');
+}
+
+body {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 150px 1fr 75px;
 }
 
 .nav-banner {
-    /* background-color: #6b21a8; */
     background-image: url('./assets/header-background.jpg');
-    padding: 24px 0;
+    height: 100%;
+    display: flex;
 }
 
 #logo {
@@ -28,4 +40,113 @@
     background-color: rgba(0,0,0,0.7);
     width: min-content;
     margin: auto;
+}
+
+.footer {
+    background-color: black;
+    display: grid;
+    align-items: center;
+}
+
+.footer p {
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+/* Main styline */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10%;
+    padding: 60px 10%;
+}
+
+.input-div, .output-div {
+    background-color: var(--card-colour);
+    border-radius: 40px;
+    padding: 24px;
+    position: relative;
+}
+
+.input-div form {
+    display: flex;
+    flex-direction: column;
+    gap:16px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.form-label, .location-descriptor {
+    font-size: 20px;
+}
+
+.location-form {
+    width: min(300px, 90%);
+    border: none;
+    outline: none;
+    padding: 8px 0.8ch;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.btn {
+    background-color: #67e8f9;
+    border: none;
+    outline: none;
+    border-radius: 20px;
+    padding: 16px 20px;
+    width: fit-content;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.btn:hover {
+    background-color: #075985;
+    cursor: pointer;
+    color: white;
+}
+
+.input-img {
+    border-radius: 80px;
+    width: min(90%, 500px);
+    position: absolute;
+    right:20px;
+    bottom: 20px;
+}
+
+/* Output */ 
+.weather-img {
+    width: 300px;
+    flex-shrink: 1;
+}
+
+.weather-main {
+    margin-top: 20px;
+    display: flex;
+}
+
+.weather-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap:10px;
+}
+
+.category {
+    display: flex;
+    gap: 24px;
+}
+
+.cat-icon {
+    width: 80px;
+}
+
+.temp, .big {
+    font-size: 60px;
+    font-family: 'Mud';
+    min-width: fit-content;
+    text-wrap: nowrap;
 }
