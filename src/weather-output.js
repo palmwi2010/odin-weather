@@ -1,8 +1,9 @@
 import tempImg from "./assets/weather/thermometer.svg"
 import windImg from "./assets/weather/wind.svg";
 import humidityImg from "./assets/weather/humidity.svg"
+import { formatDate, degreeToDirection } from "./utils";
 
-function render() {
+function render(weather) {
     // Elements
     const $container = document.createElement("div");
     const $header = document.createElement("h1");
@@ -19,43 +20,51 @@ function render() {
     $leftContainer.className = "weather-left"
     $img.className = "weather-img";
 
-    // Content
-    $header.textContent = "London, UK";
-    $descriptor.textContent = "Current weather at 10:00 16th August in London UK"
-    $img.src = "https://basmilius.github.io/weather-icons/production/fill/all/clear-day.svg";
+    // Early return if no weather
+    if (!weather) {
+        return $container;
+    }
 
+    // Content
+    const time = weather.datetime.substring(0,5);
+
+    $header.textContent = `${weather.address}`;
+    $descriptor.textContent = `Current weather at ${time} ${formatDate(weather.date)} in ${weather.address}`
+    $img.src = `https://basmilius.github.io/weather-icons/production/fill/all/${weather.icon}.svg`;
+
+    const windDir = degreeToDirection(weather.winddir);
 
     const tempItem = {
         src: tempImg,
         alt: "Temperature",
         title: "Temperature",
-        big: "32\u00B0C", 
-        label: "Feels like: 32\u00B0C"
+        big: `${weather.temp}\u00B0C`, 
+        label: `Feels like: ${weather.feelslike}\u00B0C`
     };
 
     const windItem = {
         src: windImg,
         alt: "Wind",
         title: "Wind",
-        big: "6 mph", 
-        label: "Direction: SW"
+        big: `${weather.windspeed} mph`, 
+        label: `Direction: ${windDir}`
     };
 
     const humidityItem = {
         src: humidityImg,
         alt: "Humidity",
         title: "Humidity",
-        big: "67%", 
+        big: `${weather.humidity}%`, 
         label: "Current humidity"
     };
 
     // Appends
-    $container.appendChild($header);
-    $container.appendChild($descriptor);
-    
     $leftContainer.appendChild(makeOutputCategory(tempItem));
     $leftContainer.appendChild(makeOutputCategory(windItem));
     $leftContainer.appendChild(makeOutputCategory(humidityItem));
+
+    $container.appendChild($header);
+    $container.appendChild($descriptor);
 
     $weatherContainer.appendChild($leftContainer);
     $weatherContainer.appendChild($img);
@@ -67,14 +76,14 @@ function render() {
 
 const makeOutputCategory = (obj) => {
 
-    const $container = document.createElement('div');
-    const $textContainer = document.createElement('div');
-    const $icon = document.createElement('img');
+    const $container = document.createElement("div");
+    const $textContainer = document.createElement("div");
+    const $icon = document.createElement("img");
     const $big = document.createElement("p");
     const $label = document.createElement("p");
 
-    $container.className = 'category';
-    $icon.className = 'cat-icon';
+    $container.className = "category";
+    $icon.className = "cat-icon";
     $big.className = "big";
     $label.className = "big-label";
 

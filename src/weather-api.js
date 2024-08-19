@@ -1,11 +1,23 @@
 class WeatherAPI {
 
-    static API_KEY = "52XZCWBLFZRJCBEUNVBP7BSBH";
-    static BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
+    constructor() {
+        this.API_KEY = "52XZCWBLFZRJCBEUNVBP7BSBH";
+        this.BASE_URL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/"
+        this.keys = [
+            "conditions", 
+            "datetime",
+            "temp",
+            "feelslike",
+            "winddir",
+            "windspeed",
+            "humidity",
+            "icon",
+        ]
+    }
 
-    static async getWeather(location) {
+    async getWeather(location) {
 
-        const url = `${WeatherAPI.BASE_URL}${location}?unitGroup=metric&include=current&key=${WeatherAPI.API_KEY}&contentType=json`;
+        const url = `${this.BASE_URL}${location}?unitGroup=metric&include=current&key=${this.API_KEY}&contentType=json`;
 
         try {
             const response = await fetch(url, {mode: "cors"});
@@ -13,37 +25,25 @@ class WeatherAPI {
                 throw new Error(`HTTP error code ${response.status}`)
             }
             const data = await response.json();
-            const packagedData = WeatherAPI.weatherParser(data);
+            const packagedData = this.weatherParser(data);
             return packagedData;
         } catch(error) {
             console.log(error);
+            return false
         }
     }
 
-    static weatherParser(data) {
-
-        const keys = [
-            "conditions", 
-            "datetime",
-            "temp",
-            "feelsLike",
-            "winddir",
-            "windspeed",
-            "humidity",
-            "icon",
-        ]
-
-        console.log(data);
+    weatherParser(data) {
         const conditionData = data.currentConditions;
-        console.log(conditionData);
-
-        const output = keys.reduce((acc, key) => {
+        const output = this.keys.reduce((acc, key) => {
             if (Object.prototype.hasOwnProperty.call(conditionData, key)) {
                 acc[key] = conditionData[key];
             };
             return acc;
         }, {});
+        console.log(data);
         output.address = data.resolvedAddress;
+        output.date = data.days["0"].datetime;
         return output;
     }
 }

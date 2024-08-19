@@ -117,6 +117,10 @@ h1 {
     bottom: 20px;
 }
 
+.feedback {
+    color: red;
+}
+
 /* Output */ 
 .weather-img {
     width: 300px;
